@@ -6,7 +6,7 @@ const GITHUB_BASE_URL = "https://github.com/WesMeer/AD-Replacer-Chrome-Extension
 const memeBestanden = [
   "nyan.mp4", "rick.mp4", "oiia.mp4", "pbjt.mp4", 
   "gandalf.mp4", "keyboardcat.mp4", "maxwell.mp4", 
-  "happy.mp4", "sad.mp4", "huh.mp4", "chipi.mp4", "yeahboii.mp4"
+  "happy.mp4", "huh.mp4", "chipi.mp4", "yeahboii.mp4"
 ];
 
 function pakRandomMeme() {
