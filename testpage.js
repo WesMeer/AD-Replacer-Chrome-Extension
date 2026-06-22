@@ -1,37 +1,33 @@
+const GITHUB_BASE_URL = "https://github.com/WesMeer/AD-Replacer-Chrome-Extension/raw/refs/heads/main/";
+
+const memeBestanden = [
+  "nyan.mp4", "rick.mp4", "oiia.mp4", "pbjt.mp4", 
+  "gandalf.mp4", "keyboardcat.mp4", "maxwell.mp4", 
+  "happy.mp4", "huh.mp4", "chipi.mp4", "yeahboii.mp4"
+];
+
 const gallery = document.getElementById('gallery');
 
-function bouwTestPagina() {
-  try {
-    // Haal het manifest op
-    const manifest = chrome.runtime.getManifest();
-    const resources = manifest.web_accessible_resources[0].resources;
+function buildTestPage() {
+  memeBestanden.forEach((filename, index) => {
+    const videoUrl = GITHUB_BASE_URL + filename;
     
-    // Filter alle mp4'tjes eruit
-    const videoBestanden = resources.filter(bestand => bestand.endsWith('.mp4'));
-
-    // Bouw de HTML op volgorde op
-    videoBestanden.forEach((bestandsnaam, index) => {
-      const videoUrl = chrome.runtime.getURL(bestandsnaam);
-      
-      const card = document.createElement('div');
-      card.className = 'video-card';
-      
-      card.innerHTML = `
-        <video autoplay loop muted playsinline>
-          <source src="${videoUrl}" type="video/mp4">
-          Kan video niet laden. Check manifest.json!
-        </video>
-        <div class="video-info">
-          <span class="video-number">#${index + 1}:</span> ${bestandsnaam}
-        </div>
-      `;
-      
-      gallery.appendChild(card);
-    });
-  } catch (e) {
-    console.error("Fout bij het laden van de testpagina:", e);
-  }
+    const card = document.createElement('div');
+    card.className = 'video-card';
+    
+    card.innerHTML = `
+      <video autoplay loop muted playsinline>
+        <source src="${videoUrl}" type="video/mp4">
+        Failed to load video.
+      </video>
+      <div class="video-info">
+        <span class="video-number">#${index + 1}:</span> ${filename}
+      </div>
+    `;
+    
+    gallery.appendChild(card);
+  });
 }
 
-// Start het bouwen van de pagina
-bouwTestPagina();
+// Build the gallery view immediately
+buildTestPage();

@@ -1,40 +1,50 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <meta charset="utf-8">
   <style>
     body {
       width: 220px;
       font-family: Arial, sans-serif;
-      padding: 15px;
+      padding: 10px;
       margin: 0;
-      background: #1e1e2e;
-      color: #cdd6f4;
+      background-color: #f4f4f9;
     }
-    h3 { margin-top: 0; color: #f5c2e7; text-align: center; }
-    .btn {
-      display: block;
+    h3 {
+      margin-top: 0;
+      color: #333;
+      text-align: center;
+    }
+    button {
       width: 100%;
       padding: 10px;
-      margin-top: 10px;
+      margin-bottom: 8px;
       border: none;
-      border-radius: 5px;
+      border-radius: 4px;
       cursor: pointer;
       font-weight: bold;
       font-size: 14px;
       transition: background 0.2s;
     }
-    #toggle-btn { background: #a6e3a1; color: #11111b; }
-    #toggle-btn.disabled { background: #f38ba8; color: #11111b; }
-    #test-btn { background: #89b4fa; color: #11111b; }
-    #test-btn:hover { background: #b4befe; }
+    #toggle-btn {
+      background-color: #2ecc71;
+      color: white;
+    }
+    #toggle-btn.disabled {
+      background-color: #e74c3c;
+    }
+    #test-btn {
+      background-color: #3498db;
+      color: white;
+    }
+    button:hover {
+      opacity: 0.9;
+    }
   </style>
 </head>
 <body>
-  <h3>😎 Meme Replacer</h3>
-  <button id="toggle-btn" class="btn">Extensie: AAN</button>
-  <button id="test-btn" class="btn">Open Testpagina</button>
-
+  <h3>Meme Replacer</h3>
+  <button id="toggle-btn">Extension: ON</button>
+  <button id="test-btn">Open Test Page</button>
   <script src="popup.js"></script>
 </body>
 </html>

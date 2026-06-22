@@ -1,26 +1,35 @@
 const toggleBtn = document.getElementById('toggle-btn');
 const testBtn = document.getElementById('test-btn');
 
-// Haal de huidige status op (standaard is TRUE oftewel AAN)
+// Fetch current status on open
 chrome.storage.local.get({ extensieActief: true }, (data) => {
   updateButtonUI(data.extensieActief);
 });
 
-// Klikactie voor de Aan/Uit-knop
+// Click action for On/Off button
 toggleBtn.addEventListener('click', () => {
   chrome.storage.local.get({ extensieActief: true }, (data) => {
     const nieuweStatus = !data.extensieActief;
+    
     chrome.storage.local.set({ extensieActief: nieuweStatus }, () => {
       updateButtonUI(nieuweStatus);
-      // Ververs de huidige actieve tab om de wijziging direct te tonen
+      
+      // Send a live message to the active tab to switch IMMEDIATELY
       chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
-        if (tabs[0]?.id) chrome.tabs.reload(tabs[0].id);
+        if (tabs[0]?.id) {
+          chrome.tabs.sendMessage(tabs[0].id, { 
+            actie: "status_gewijzigd", 
+            actief: nieuweStatus 
+          }).catch(err => {
+            // Catch error if page hasn't been refreshed yet
+          });
+        }
       });
     });
   });
 });
 
-// Klikactie voor de Testpagina-knop
+// Click action for Test Page button
 testBtn.addEventListener('click', () => {
   const testPageUrl = chrome.runtime.getURL('testpage.html');
   chrome.tabs.create({ url: testPageUrl });
@@ -28,10 +37,10 @@ testBtn.addEventListener('click', () => {
 
 function updateButtonUI(actief) {
   if (actief) {
-    toggleBtn.textContent = 'Extensie: AAN';
+    toggleBtn.textContent = 'Extension: ON';
     toggleBtn.classList.remove('disabled');
   } else {
-    toggleBtn.textContent = 'Extensie: UIT';
+    toggleBtn.textContent = 'Extension: OFF';
     toggleBtn.classList.add('disabled');
   }
 }

@@ -1,30 +1,22 @@
-// AUTOMATISCHE SCAN VIA HET MANIFEST
-let mijnVideoLijst = [];
+// ==========================================
+// LIVE MEMES STREAMED FROM GITHUB
+// ==========================================
+const GITHUB_BASE_URL = "https://github.com/WesMeer/AD-Replacer-Chrome-Extension/raw/refs/heads/main/";
 
-function laadVideoLijstUitManifest() {
-  try {
-    const manifest = chrome.runtime.getManifest();
-    const resources = manifest.web_accessible_resources[0].resources;
-    
-    mijnVideoLijst = resources
-      .filter(bestand => bestand.endsWith('.mp4'))
-      .map(bestand => chrome.runtime.getURL(bestand));
-  } catch (e) {
-    console.error("Kon video's niet automatisch scannen uit manifest:", e);
-  }
-}
-
-// Kickstart de automatische scan direct
-laadVideoLijstUitManifest();
+const memeBestanden = [
+  "nyan.mp4", "rick.mp4", "oiia.mp4", "pbjt.mp4", 
+  "gandalf.mp4", "keyboardcat.mp4", "maxwell.mp4", 
+  "happy.mp4", "sad.mp4", "huh.mp4", "chipi.mp4", "yeahboii.mp4"
+];
 
 function pakRandomMeme() {
-  if (mijnVideoLijst.length === 0) return "";
-  const randomIndex = Math.floor(Math.random() * mijnVideoLijst.length);
-  return mijnVideoLijst[randomIndex];
+  if (memeBestanden.length === 0) return "";
+  const randomIndex = Math.floor(Math.random() * memeBestanden.length);
+  return GITHUB_BASE_URL + memeBestanden[randomIndex];
 }
 
 // ==========================================
-// DEEL A: SPECIFIEK VOOR YOUTUBE
+// PART A: YOUTUBE SPECIFIC LOGIC
 // ==========================================
 let adIsActief = false;
 
@@ -88,7 +80,7 @@ function handleYouTubeAds() {
 }
 
 // ==========================================
-// DEEL B: FLOATING OVERLAY METHODE (VOLLEDIG HERSTELD & CLEAN)
+// PART B: FLOATING OVERLAY METHOD (GENERAL WEBSITES)
 // ==========================================
 function handleAlgemeneAds() {
   const dynamicSelectors = [
@@ -118,13 +110,11 @@ function handleAlgemeneAds() {
 
     const rect = ad.getBoundingClientRect();
     
-    // Filter lege/onzichtbare placeholders eruit (behalve als het onze actieve ad-iframes zijn)
     if (!isZelfIframe && (rect.width <= 10 || rect.height <= 10)) {
       if (memeOverlay) memeOverlay.style.setProperty('display', 'none', 'important');
       return;
     }
 
-    // Verberg de meme direct als hij buiten het zichtbare scherm scrolt
     if (rect.top > window.innerHeight || rect.bottom < 0) {
       if (memeOverlay) memeOverlay.style.setProperty('display', 'none', 'important');
       return;
@@ -141,26 +131,28 @@ function handleAlgemeneAds() {
         </video>
       `;
 
-      document.body.appendChild(memeOverlay);
+      if (ad.parentElement) {
+        ad.parentElement.appendChild(memeOverlay);
+      } else {
+        document.body.appendChild(memeOverlay);
+      }
     }
 
-    // Bepaal de maten met nette fallbacks
     const breedte = rect.width > 10 ? rect.width : parseInt(ad.getAttribute('width')) || parseInt(ad.style.width) || 300;
     const hoogte = rect.height > 10 ? rect.height : parseInt(ad.getAttribute('height')) || parseInt(ad.style.height) || 250;
 
-    // Plak de video met de veilige z-index (9) ten opzichte van het scherm
     memeOverlay.style.setProperty('position', 'fixed', 'important');
     memeOverlay.style.setProperty('top', `${rect.top}px`, 'important');
     memeOverlay.style.setProperty('left', `${rect.left}px`, 'important');
     memeOverlay.style.setProperty('width', `${breedte}px`, 'important');
     memeOverlay.style.setProperty('height', `${hoogte}px`, 'important');
-    memeOverlay.style.setProperty('z-index', '9', 'important'); // NETJES TERUG OP 9
+    memeOverlay.style.setProperty('z-index', '1', 'important'); 
     memeOverlay.style.setProperty('display', 'flex', 'important');
   });
 }
 
 // ==========================================
-// ENGINE (SCHOON & TERUGGEDRAAID)
+// CORE CORE ENGINE
 // ==========================================
 let actieveObserver = null;
 
