@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Meme Replacer - Video Overzicht</title>
+  <style>
+    body { 
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+      background: #11111b; 
+      color: #cdd6f4; 
+      max-width: 900px; 
+      margin: 40px auto; 
+      padding: 0 20px; 
+      text-align: center; 
+    }
+    h1 { color: #f5c2e7; margin-bottom: 10px; }
+    p { color: #a6adc8; margin-bottom: 40px; }
+    
+    .video-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 250px 20px; 
+      margin-top: 20px;
+    }
+    
+    .video-card {
+      background: #1e1e2e;
+      border: 2px solid #313244;
+      border-radius: 8px;
+      padding: 10px;
+      height: 200px; 
+      position: relative;
+    }
+    
+    .video-card video {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 4px;
+      background: #000;
+    }
+    
+    .video-info {
+      margin-top: 8px;
+      font-weight: bold;
+      font-size: 14px;
+      color: #89b4fa;
+      text-align: left;
+    }
+    .video-number {
+      color: #f38ba8;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Meme Video Controlecentrum</h1>
+  <p>Hieronder zie je alle 12 video's die momenteel in je extensie geladen zijn, netjes op volgorde.</p>
+  
+  <div class="video-grid" id="gallery">
+    </div>
+
+  <script src="testpage.js"></script>
+
+</body>
+</html>
